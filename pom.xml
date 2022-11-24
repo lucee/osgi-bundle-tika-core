@@ -1,0 +1,170 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.lucee</groupId>
+  <artifactId>tika-core</artifactId>
+  <version>1.28.5</version>
+  <name>tika-core</name>
+  <packaging>bundle</packaging>
+
+  <description>OSGi Version of tika-core</description>
+  <url>http://maven.lucee.org/tika-core/</url>
+
+  <!-- same license as the original jar -->
+  <licenses>
+<license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <developers>
+<developer>
+      <id>micstriit</id>
+      <name>Michael Offner</name>
+      <email>michael@lucee.org</email>
+      <organization>Lucee Association Switzerland</organization>
+      <organizationUrl>http://lucee.org</organizationUrl>
+      <roles>
+        <role>Project-Administrator</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <build>
+    <plugins>
+      <plugin>
+      <groupId>org.sonatype.plugins</groupId>
+      <artifactId>nexus-staging-maven-plugin</artifactId>
+      <version>1.6.3</version>
+      <extensions>true</extensions>
+      <configuration>
+        <serverId>ossrh</serverId>
+        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+      </configuration>
+    </plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-gpg-plugin</artifactId>
+      <version>1.5</version>
+      <executions>
+        <execution>
+          <id>sign-artifacts</id>
+          <phase>verify</phase>
+          <goals>
+            <goal>sign</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-release-plugin</artifactId>
+      <version>2.5</version>
+      <configuration>
+        <autoVersionSubmodules>true</autoVersionSubmodules>
+        <useReleaseProfile>false</useReleaseProfile>
+        <releaseProfiles>release</releaseProfiles>
+        <goals>deploy</goals>
+      </configuration>
+    </plugin>
+
+    <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-dependency-plugin</artifactId>
+         <version>2.10</version>
+         <executions>
+           <execution>
+             <id>unpack</id>
+             <phase>validate</phase>
+             <goals>
+               <goal>unpack</goal>
+             </goals>
+             <configuration>
+               <artifactItems>
+                 <artifactItem>
+                   <groupId>org.apache.tika</groupId>
+                    <artifactId>tika-core</artifactId>
+                    <version>1.28.5</version>
+                   <type>jar</type>
+                   <overWrite>false</overWrite>
+                   <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                 </artifactItem>
+               </artifactItems>
+               <overWriteReleases>true</overWriteReleases>
+               <overWriteSnapshots>true</overWriteSnapshots>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
+
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>5.1.2</version>
+        <configuration>
+          <unpackBundle>true</unpackBundle>
+          <instructions>
+            <Bundle-Name>org.lucee.tika-core</Bundle-Name>
+            <Bundle-SymbolicName>org.lucee.tika-core</Bundle-SymbolicName>
+            <Bundle-Description>OSGI version of jar ${project.name}</Bundle-Description>
+            <Export-Package>*,META-INF.services.*</Export-Package>
+            <!-- <Require-Bundle></Require-Bundle> -->
+            <!-- <Require-Bundle-Fragment></Require-Bundle-Fragment> -->
+            <!-- <Import-Package>*</Import-Package> -->
+            <!-- <DynamicImport-Package>*</DynamicImport-Package> -->
+            <!-- <Fragment-Host></Fragment-Host> -->
+            <Bundle-Vendor>The Apache Software Foundation</Bundle-Vendor>
+						<Specification-Vendor>The Apache Software Foundation</Specification-Vendor>
+						<Bundle-Activator>org.apache.tika.config.TikaActivator</Bundle-Activator>
+						<Bundle-DocURL>http&#x3a;&#x2f;&#x2f;tika.apache.org&#x2f;</Bundle-DocURL>
+						<Require-Capability>osgi.ee&#x3b;filter&#x3a;&#x3d;&#x22;&#x28;&#x26;&#x28;osgi.ee&#x3d;JavaSE&#x29;&#x28;version&#x3d;1.8&#x29;&#x29;&#x22;</Require-Capability>
+						<Manifest-Version>1.0</Manifest-Version>
+						<Bundle-License>https&#x3a;&#x2f;&#x2f;www.apache.org&#x2f;licenses&#x2f;LICENSE-2.0.txt</Bundle-License>
+						<Build-Jdk-Spec>1.8</Build-Jdk-Spec>
+						<Specification-Version>1.28</Specification-Version>
+						<Implementation-Vendor>The Apache Software Foundation</Implementation-Vendor>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Tool>Bnd-6.3.1.202206071316</Tool>
+						<Implementation-Title>Apache Tika core</Implementation-Title>
+						<Bundle-Description>This is the core Apache Tika&#x2122; toolkit library from which all other modules inherit functionality. It        also        includes the core facades for the Tika API.</Bundle-Description>
+						<Specification-Title>Apache Tika core</Specification-Title>
+						<Automatic-Module-Name>org.apache.tika.core</Automatic-Module-Name>
+						<Implementation-Version>1.28.5</Implementation-Version>
+						<Created-By>Apache Maven Bundle Plugin 5.1.8</Created-By>
+            <!-- Embed Dependency -->
+          </instructions>
+        </configuration>
+        <extensions>true</extensions>
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+
+  <scm>
+    <url>https://github.com/lucee/osgi-bundle-tika-core</url>
+    <connection>scm:git:git://github.com/lucee/osgi-bundle-tika-core.git</connection>
+    <developerConnection>scm:git:git@github.com:lucee/osgi-bundle-tika-core.git</developerConnection>
+    <tag>tika-core OSGi library</tag>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+  </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>
